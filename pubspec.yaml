@@ -1,0 +1,42 @@
+name: finwise
+description: "FinWise - quản lý tiền và học tài chính cho học sinh, sinh viên Việt Nam."
+publish_to: 'none'
+
+# version: <shown version>+<build number>
+#   Android: versionName / versionCode    iOS: CFBundleShortVersionString / CFBundleVersion
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # Vietnamese text for built-in widgets (date picker, copy/paste menu ...)
+  flutter_localizations:
+    sdk: flutter
+  # Saves the wallet on the phone (Android SharedPreferences / iOS NSUserDefaults)
+  shared_preferences: ^2.5.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  # Be Vietnam Pro - designed for Vietnamese accent marks. SIL Open Font License.
+  fonts:
+    - family: BeVietnamPro
+      fonts:
+        - asset: assets/fonts/BeVietnamPro-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/BeVietnamPro-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/BeVietnamPro-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/BeVietnamPro-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/BeVietnamPro-ExtraBold.ttf
+          weight: 800
