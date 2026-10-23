@@ -71,7 +71,8 @@ jobs:
 
   web:
     needs: test
-    if: github.event_name != 'pull_request'
+    # Only from the main branch: GitHub Pages refuses deployments from tags.
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
