@@ -1,5 +1,9 @@
 # FinWise Mobile: quản lý tiền & học tài chính (iOS + Android)
 
+> **Chạy thử ngay trên trình duyệt:** https://codeman28.github.io/finwise-mobile/
+> **Tải APK cho Android:** [Releases](https://github.com/Codeman28/finwise-mobile/releases/latest) (`FinWise-arm64.apk` cho hầu hết điện thoại)
+
+
 A Flutter app for Vietnamese high-school and university students:
 
 * **Real money management**: income and expenses, monthly budgets, savings goals, and a dashboard.
