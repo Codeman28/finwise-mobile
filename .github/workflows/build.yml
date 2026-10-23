@@ -54,20 +54,47 @@ jobs:
           channel: stable
           cache: true
       - run: flutter pub get
+      # The release (upload) key lives in repository secrets, never in the code.
+      # Pull requests from forks have no access to secrets -> debug-signed build.
+      - name: Restore release signing key
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "No signing secrets - building with the debug key."
+            exit 0
+          fi
+          echo "$KEYSTORE_BASE64" | base64 --decode > android/upload-keystore.jks
+          {
+            echo "storeFile=upload-keystore.jks"
+            echo "storePassword=$KEYSTORE_PASSWORD"
+            echo "keyAlias=$KEY_ALIAS"
+            echo "keyPassword=$KEY_PASSWORD"
+          } > android/key.properties
+          echo "Release signing key restored."
       - name: Build APK for all phones
         run: flutter build apk --release
       - name: Build small per-CPU APKs
         run: flutter build apk --release --split-per-abi
-      - name: Rename APKs
+      - name: Build App Bundle for Google Play
+        run: flutter build appbundle --release
+      - name: Collect files
         run: |
           mkdir -p dist
           cp build/app/outputs/flutter-apk/app-release.apk dist/FinWise.apk
           cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk dist/FinWise-arm64.apk
           cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk dist/FinWise-armv7.apk
+          cp build/app/outputs/bundle/release/app-release.aab dist/FinWise-GooglePlay.aab
+      - name: Remove signing files from the runner
+        if: always()
+        run: rm -f android/upload-keystore.jks android/key.properties
       - uses: actions/upload-artifact@v4
         with:
           name: finwise-android
-          path: dist/*.apk
+          path: dist/*
 
   web:
     needs: test
@@ -105,13 +132,13 @@ jobs:
           path: dist
       - uses: softprops/action-gh-release@v2
         with:
-          files: dist/*.apk
+          files: dist/*
           body: |
             ## FinWise ${{ github.ref_name }}
 
             **Cài trên Android:** tải `FinWise-arm64.apk` (hầu hết điện thoại) hoặc `FinWise.apk` (mọi máy),
             mở file trên điện thoại và cho phép "Cài đặt từ nguồn không xác định".
 
-            **Chạy thử trên trình duyệt:** xem link GitHub Pages trong README.
+            **Google Play:** `FinWise-GooglePlay.aab` là gói để tải lên Google Play Console.
 
-            Bản build này được ký bằng khóa debug - phù hợp để cài thử, chưa dùng để đưa lên Google Play.
+            **Chạy thử trên trình duyệt:** https://codeman28.github.io/finwise-mobile/

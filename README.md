@@ -111,3 +111,11 @@ flutter build ipa               # or run from Xcode on an iPhone
 ---
 
 *Học liệu mang tính giáo dục, không phải lời khuyên tài chính cá nhân. Thuế TNCN trong mô phỏng phiếu lương là ước tính minh họa; the constants are at the top of `lib/core/finance.dart`.*
+
+---
+
+## Giấy phép / License
+
+* **Mã nguồn:** MIT - xem [LICENSE](LICENSE).
+* **Font Be Vietnam Pro:** SIL Open Font License - xem `assets/fonts/OFL.txt`.
+* **Nội dung bài học:** được biên soạn lại bằng tiếng Việt từ *High School Toolkit* (Hands on Banking®, Wells Fargo). Bản quyền tài liệu gốc thuộc về chủ sở hữu; giấy phép MIT **không** áp dụng cho phần nội dung đó.
